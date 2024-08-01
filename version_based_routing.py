@@ -71,6 +71,18 @@ def filter_methods_by_hint(methods, hint):
     
     return matching_methods
 
+def get_class_names(module):
+    """Gets the names of all classes defined in the given module."""
+    class_names = []
+    
+    # Iterate over all members of the module
+    for name, obj in inspect.getmembers(module, inspect.isclass):
+        # Check if the class is defined in the given module
+        if obj.__module__ == module.__name__:
+            class_names.append(name)
+    
+    return class_names
+
 def call_function(version, family, hint):
     """Checks if a specific function exists in the first class found in the module."""
     try:
@@ -98,18 +110,7 @@ def call_function(version, family, hint):
         print("ImportError: {}.".format(e))
         return None
 
-def get_class_names(module):
-    """Gets the names of all classes defined in the given module."""
-    class_names = []
-    
-    # Iterate over all members of the module
-    for name, obj in inspect.getmembers(module, inspect.isclass):
-        # Check if the class is defined in the given module
-        if obj.__module__ == module.__name__:
-            class_names.append(name)
-    
-    return class_names
 
-# Example usage
-function_called = call_function('2.3.5.3', 'sites', 'create_site')
+
+function_called = call_function('2.3.5.3', 'user_and role', 'add_user')
 print(function_called)  # Expected output: add_user_ap_i

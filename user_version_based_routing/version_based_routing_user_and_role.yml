@@ -1,0 +1,30 @@
+---
+- name: Configure device credentials on Cisco DNA Center
+  hosts: localhost
+  vars_files:
+    - "credentials.yml"
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: creating and updating the user
+      cisco.dnac.version_based_routing_user_and_role:
+        dnac_host: "{{dnac_host}}"
+        dnac_username: "{{dnac_username}}"
+        dnac_password: "{{dnac_password}}"
+        dnac_verify: "{{dnac_verify}}"
+        dnac_port: "{{dnac_port}}"
+        dnac_version: "{{dnac_version}}"
+        dnac_debug: "{{dnac_debug}}"
+        dnac_log: True
+        dnac_log_level: DEBUG
+        config_verify: True
+        dnac_api_task_timeout: 1000
+        dnac_task_poll_interval: 1
+        state: merged
+        config:
+          - first_name: "syed"
+            last_name: "khadeer-ahmed"
+            email: "khadeerahmed@example.com"
+            password: "Syed@123"
+            username: "syed"
+            role_list: ["SUPER-ADMIN-ROLE"]
