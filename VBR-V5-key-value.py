@@ -45,48 +45,31 @@ def validate_version(version):
         return False
     return True
 
-# Function to attempt to import a module dynamically based on the family name and version
+
 def try_import_module(version, family):
     if version in modules:
         module_dict = modules[version]
         if family in module_dict:
-            return module_dict[family]  # Return the dictionary of functions
+            return module_dict[family]
         else:
             raise ImportError(f"Family '{family}' not found in version '{version}'.")
     else:
         raise ImportError(f"Version '{version}' not found.")
 
-# Function to filter methods to include only those containing the hint in their name
-def filter_methods_by_hint(methods_dict, hint):
-    # Initialize an empty list to hold methods that match the hint
-    matching_methods = []
 
-    # Iterate over each method name in the methods dictionary
-    for key, value in methods_dict.items():
-        # Check if the hint is present in the key
-        if hint in key:
-            # If it is, add the method name to the list of matching methods
-            matching_methods.append(value)
-
-    # Return the list of methods that matched the hint
-    return matching_methods
-
-# Function to check if a specific function exists in the methods dictionary
-def call_function(version, family, hint):
+def get_function(version, family, function_key):
     if validate_version(version):
         try:
             methods_dict = try_import_module(version, family)
-            methods = filter_methods_by_hint(methods_dict, hint)
-
-            if methods:
-                return methods[0]  # Return the matched function name
+            if function_key in methods_dict:
+                return methods_dict[function_key]
             else:
-                print(f"No matching function for hint '{hint}' in version '{version}'.")
+                print(f"No function found '{function_key}' in version '{version}'.")
                 return None
         except ImportError as e:
             print(f"ImportError: {e}")
             return None
 
 # Example usage
-function_called = call_function('2.3.7.6', 'user_and_roles', 'add_rol')
-print(function_called)  # Expected output: add_role_ap_i
+function_called = get_function('2.3.5.3', 'user_and_roles', 'add_role')
+print(function_called) 
